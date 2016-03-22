@@ -10,22 +10,22 @@ namespace CreateBitmapStall
 {
     class Program
     {
-        class GarbageNode
+        class DataNode
         {
             public string Name;
-            public List<GarbageNode> SubNodes;
+            public List<DataNode> SubNodes;
         }
 
-        static GarbageNode CreateGarbageNode(int level, int count, int maxDepth)
+        static DataNode CreateDataTree(int level, int count, int maxDepth)
         {
-            var subNodes = new List<GarbageNode>(count);
+            var subNodes = new List<DataNode>(count);
 
             // resursively generated nodes until maxDepth is reached
             if (level < maxDepth)
                 for (int i = 0; i < count; i++)
-                    subNodes.Add(CreateGarbageNode(level + 1, count, maxDepth));
+                    subNodes.Add(CreateDataTree(level + 1, count, maxDepth));
             
-            return new GarbageNode()
+            return new DataNode()
             {
                 Name = new string('*', 5),
                 SubNodes = subNodes
@@ -61,8 +61,8 @@ namespace CreateBitmapStall
             // create lots of data and bitmap sources
             while (true)
             {
-                Console.WriteLine("creating garbage...");
-                appData.Add(CreateGarbageNode(0, 2, 21));
+                Console.WriteLine("creating data...");
+                appData.Add(CreateDataTree(0, 2, 21));
 
                 // create bitmap sources
                 CreateBitmapSources();
