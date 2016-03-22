@@ -34,15 +34,16 @@ namespace CreateBitmapStall
 
         static void CreateBitmapSources()
         {
+            const int size = 64;
+
             for (int i = 0; i < 100; i++)
             {
                 var sw = new Stopwatch();
                 sw.Start();
 
-                var bitData = new byte[64 * 64 * 4];
-                var bmp = BitmapSource.Create(
-                    (int)64, (int)64, 96, 96,
-                    System.Windows.Media.PixelFormats.Bgra32, null, bitData, 64 * 4);
+                var bitData = new byte[size * size * 4];
+                var bmp = BitmapSource.Create(size, size, 96, 96,
+                    System.Windows.Media.PixelFormats.Bgra32, null, bitData, size * 4);
 
                 Console.WriteLine("CreateBitmapSource: {0}ms", sw.ElapsedMilliseconds);
             }
@@ -51,20 +52,19 @@ namespace CreateBitmapStall
         [STAThread]
         static void Main(string[] args)
         {
-            //// show file dialog
+            // show file dialog, necessary to cause stalls
             var fdlg = new Microsoft.Win32.OpenFileDialog();
             fdlg.ShowDialog();
             
-            var garbage = new HashSet<object>();
+            var appData = new HashSet<object>();
 
+            // create lots of data and bitmap sources
             while (true)
             {
-                // create garbage
                 Console.WriteLine("creating garbage...");
-                var g = CreateGarbageNode(0, 2, 21);
-                garbage.Add(g);
+                appData.Add(CreateGarbageNode(0, 2, 21));
 
-                // create bitmaps sources
+                // create bitmap sources
                 CreateBitmapSources();
             }
         }
